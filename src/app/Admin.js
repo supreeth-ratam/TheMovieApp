@@ -1,14 +1,20 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { addDoc } from "firebase/firestore";
+import { usersCollectionRef } from "../components/Home";
+
+
+export  const api_key = "61d5685067d40273219407399d28b1b1";
 
 export default function Admin() {
+
   const [movie, setMovie] = useState([]);
-  const api_key = "61d5685067d40273219407399d28b1b1";
   const [imdb, setImdb] = useState("");
   const [item, setItem] = useState({});
   const [url, setUrl] = useState("");
 
+  
   useEffect(() => {
     const fetchMovie = async () => {
       const url = `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&query=${imdb}`;
@@ -18,18 +24,27 @@ export default function Admin() {
     };
     imdb && fetchMovie();
   }, [imdb]);
+
+
+
+
   function handleSubmit(event){    
     event.preventDefault();
   }
+
+
   function selectMovie(passme){
     setItem(passme)
     setImdb('')
+    setUrl('')
   }
+
   function urlSubmit(event){
     event.preventDefault()
     var temp = item
     temp.playurl = url
-    console.log(temp)
+    addDoc(usersCollectionRef,temp) 
+
   }
   return (
     <Container>

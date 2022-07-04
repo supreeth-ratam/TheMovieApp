@@ -7,12 +7,13 @@ import { selectUserName, selectUserEmail, selectUserPhoto } from "../features/us
 import { setUserLoginDetails,setSignOutState } from "../features/userSlice";
 
 
+
 export default function Header() {
  
   const dispatch = useDispatch();
-  const username = useSelector(selectUserName);
   const email = useSelector(selectUserEmail);
   const photo = useSelector(selectUserPhoto);
+  const username = useSelector(selectUserName);
 
   function handleSignIn(){
    signInWithPopup(auth, provider).then((response) => 
@@ -45,13 +46,16 @@ export default function Header() {
       </NavMenu>
       <Profile>
         <p>Hi, {username.split(' ')[0]}</p>
-        <img src={photo} alt={email} onClick={handleSignOut}/>
+        <img src={photo} alt= "" onClick={handleSignOut}/>
       </Profile>
       </>}
       
     </Nav>
   );
 }
+
+
+
 const Nav = styled.div`
   position: fixed;
   top: 0;

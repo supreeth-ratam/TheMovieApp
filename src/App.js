@@ -4,13 +4,16 @@ import Header from './components/Header';
 import Home from './components/Home';
 import Admin from './app/Admin';
 
+import { useSelector } from "react-redux/es/exports";
+import { selectUserName} from "./features/userSlice";
+
 function App() {
+  var username = useSelector(selectUserName)
   return (
    <Router>
     <Header/>
-    <Routes>
-      <Route path='/' element={<Login/>}/>
-      <Route path= '/home' element={<Home/>}/>
+    <Routes>      
+      <Route path='/' element={!username?<Login/>:<Home/>}/>
       <Route path= '/admin' element={<Admin/>}/>
     </Routes>
    </Router>

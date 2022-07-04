@@ -4,24 +4,20 @@ import ImgSlider from './ImgSlider'
 import Viewers from './Viewers'
 import Recommends from './Recommends'
 
-import { db } from '../firebase'
-import { useState, useEffect } from "react";
+import {db} from '../firebase'
+import {useState, useEffect} from "react";
 import {
     collection,
     getDocs,
-    addDoc,
-    updateDoc,
-    deleteDoc,
-    doc,
-    limit,
   } from "firebase/firestore";
 import { enableMapSet } from 'immer'
+import Poster from './Poster'
 
-  
+export const usersCollectionRef = collection(db,"movies")  
 
 export default function Home() {
   const [movies,setMovies]  = useState([])
-  const usersCollectionRef = collection(db,"movies")
+  
   useEffect(()=>{
     function getUsers(){
       getDocs(usersCollectionRef).then(response =>{
@@ -30,7 +26,7 @@ export default function Home() {
           id: doc.id
         }))
         setMovies(movs)
-      })
+      }).catch(err => console.log(err))
     }
     getUsers();
   },[])
@@ -41,7 +37,12 @@ export default function Home() {
     <ImgSlider/>
     <Viewers/>
     <Recommends/>
-    {movies.map(movie => <li>{movie.data.overview}</li>)}
+
+    <Container>
+    <h1>WatchList</h1>
+    <div>
+    {movies.map((movie) => <Poster movie = {movie.data} thumbnail = {true} /> )}</div>
+    </Container>
    </MainSection>
    
   )
@@ -54,3 +55,13 @@ const MainSection = styled.div`
   background: url("/assets/images/home-background.png");
   background-size: cover;
 `;
+const Container = styled.div`
+h1{
+  margin:20px 0px;
+}
+div{
+  display:flex;
+  gap:20px;
+}
+
+`
